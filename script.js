@@ -88,7 +88,6 @@ const provider = new ethers.providers.Web3Provider(window.ethereum, 97)//ChainID
 let signer;
 let contract;
 
-
 const event = "GameResult";
 
 provider.send("eth_requestAccounts", []).then(()=>{
@@ -105,11 +104,15 @@ provider.send("eth_requestAccounts", []).then(()=>{
     )
 }
 )
+
+
 const playerChoiceSelect = document.getElementById("player-choice");
 const playButton = document.getElementById("play-button");
+const eventButton = document.getElementById("event-list");
 let choices = ["Rock", "Paper", "Scissors"]
 
 playButton.addEventListener("click", async () => {
+    //event.preventDefault();
     const playerChoice = playerChoiceSelect.value;
     let amountInEth = document.getElementById("bet-amount").value;
     let amountInWei = ethers.utils.parseEther(amountInEth.toString())
@@ -128,12 +131,14 @@ playButton.addEventListener("click", async () => {
     let option = await queryResultRecent.args.playerChoice.toString();
     let result = await queryResultRecent.args.contractChoice.toString();
 
+    let winner;
+
     if (option == 0 && result == 2 ||  option == 1 && result == 0 || option == 2 && result == 1){
-        let winner = 'you win'
+        winner = 'you win';
     } else if (option == result){
-        let winner = 'tie'
+        winner = 'tie';
     } else {
-        let winner = 'you lose'
+        winner = 'you lose';
     }
 
     let resultLogs = `
@@ -149,9 +154,8 @@ playButton.addEventListener("click", async () => {
 
 });
 
-async function handleEvent(){
+eventButton.addEventListener("click", async () => {
 
-    //console.log(await contract.filters.CoinFlipped());
     let queryResult =  await contract.queryFilter('GameResult', await provider.getBlockNumber() - 5000, await provider.getBlockNumber());
     let queryResultRecent = queryResult[queryResult.length-1]
     let amount = await queryResultRecent.args.amount.toString();
@@ -181,5 +185,5 @@ async function handleEvent(){
     let resultLog = document.getElementById("resultLog");
     resultLog.innerText = resultLogs;
     
-}
+});
 
