@@ -1,0 +1,25 @@
+h1 {
+    font-size: 32px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  input[type="number"] {
+    width: 80px;
+  }
+  
+  button {
+    margin-right: 10px;
+  }
+  
+  #results {
+    margin-top: 20px;
+  }
+  
+  #results span {
+    font-weight: bold;
+  }
+  
